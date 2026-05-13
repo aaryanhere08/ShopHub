@@ -5,150 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - ShopHub</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <style>
-        .login-container {
-            max-width: 400px;
-            margin: 80px auto;
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .login-container h2 {
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #333;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
-        }
-
-        .login-btn {
-            width: 100%;
-            background: #667eea;
-            color: white;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: background 0.3s ease;
-        }
-
-        .login-btn:hover {
-            background: #764ba2;
-        }
-
-        .signup-link {
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .signup-link a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .signup-link a:hover {
-            text-decoration: underline;
-        }
-
-        .message {
-            margin-top: 1rem;
-            padding: 1rem;
-            border-radius: 5px;
-            display: none;
-        }
-
-        .success {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .message.show {
-            display: block;
-        }
-    </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required>
+    <main class="auth-page">
+        <section class="auth-aside">
+            <a class="logo" href="../index.html">ShopHub</a>
+            <h1>Welcome back to easier shopping.</h1>
+            <p>Sign in to keep your cart, favorites, and checkout details ready for your next order.</p>
+        </section>
+
+        <section class="auth-panel">
+            <div class="auth-card">
+                <h2>Login</h2>
+                <p>Use the email and password you created on signup.</p>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" autocomplete="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" autocomplete="current-password" minlength="6" required>
+                    </div>
+                    <button type="submit" class="auth-btn">Login</button>
+                    <div id="message" class="message"></div>
+                </form>
+
+                <div class="auth-links">
+                    <a href="forgot-password.html">Forgot password?</a>
+                    <a href="signup.html">Create account</a>
+                </div>
+                <div class="auth-links">
+                    <a href="../index.html">Back to Home</a>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit" class="login-btn">Login</button>
-            <div id="message" class="message"></div>
-        </form>
-        <div class="signup-link">
-            Don't have an account? <a href="signup.html">Sign up here</a>
-        </div>
-        <div class="signup-link">
-            <a href="../index.html">Back to Home</a>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const messageDiv = document.getElementById('message');
-            
-            // Simulate login (in real app, this would call API)
-            if (email && password.length >= 6) {
-                // Save user to localStorage
-                localStorage.setItem('user', JSON.stringify({
-                    email: email,
-                    loginTime: new Date().toISOString()
-                }));
-                
-                messageDiv.textContent = 'Login successful! Redirecting...';
-                messageDiv.className = 'message show success';
-                
-                setTimeout(() => {
-                    window.location.href = '../index.html';
-                }, 2000);
-            } else {
-                messageDiv.textContent = 'Invalid email or password';
-                messageDiv.className = 'message show error';
+        const form = document.getElementById("loginForm");
+        const messageDiv = document.getElementById("message");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value.trim().toLowerCase();
+            const password = document.getElementById("password").value;
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+            const user = users.find((item) => item.email.toLowerCase() === email && item.password === password);
+
+            if (!user) {
+                showMessage("Email or password is incorrect.", "error");
+                return;
             }
+
+            localStorage.setItem("user", JSON.stringify({
+                id: user.id,
+                fullname: user.fullname,
+                email: user.email,
+                loginTime: new Date().toISOString()
+            }));
+
+            showMessage("Login successful. Redirecting...", "success");
+            setTimeout(() => {
+                window.location.href = "../index.html";
+            }, 900);
         });
+
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `message show ${type}`;
+        }
     </script>
 </body>
 </html>

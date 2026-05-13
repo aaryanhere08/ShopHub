@@ -3,47 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopHub - E-Commerce Store</title>
+    <title>ShopHub - Curated Daily Essentials</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <div class="logo">ShopHub</div>
+            <a class="logo" href="index.html">ShopHub</a>
             <ul class="nav-menu">
                 <li><a href="#products">Products</a></li>
-                <li><a href="pages/login.html">Login</a></li>
-                <li><a href="pages/signup.html">Signup</a></li>
-                <li><a href="#" onclick="viewCart()" class="cart-btn">Cart (<span id="cart-count">0</span>)</a></li>
+                <li><a href="pages/login.html" id="loginLink">Login</a></li>
+                <li><a href="pages/signup.html" id="signupLink">Signup</a></li>
+                <li><button class="link-button" id="logoutBtn" hidden>Logout</button></li>
+                <li><button class="cart-btn" id="cartButton">Cart (<span id="cart-count">0</span>)</button></li>
             </ul>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Welcome to ShopHub</h1>
-            <p>Find the best products at unbeatable prices</p>
-            <button class="cta-btn" onclick="document.getElementById('products').scrollIntoView()">Shop Now</button>
-        </div>
-    </section>
-
-    <!-- Products Section -->
-    <section id="products" class="products">
+    <header class="hero">
         <div class="container">
-            <h2>Featured Products</h2>
-            <div class="products-grid" id="products-grid">
-                <!-- Products loaded by JavaScript -->
+            <div class="hero-content">
+                <div class="eyebrow">Fast picks, fair prices</div>
+                <h1>ShopHub</h1>
+                <p>Browse practical electronics, home gear, fashion, and fitness finds with a smoother cart, saved favorites, and a cleaner checkout.</p>
+                <div class="hero-actions">
+                    <a class="primary-btn" href="#products">Shop Now</a>
+                    <a class="secondary-btn" href="pages/signup.html">Create Account</a>
+                </div>
+            </div>
+            <aside class="hero-panel" aria-label="Store highlights">
+                <h2>Today at a glance</h2>
+                <div class="mini-stat"><span>Featured items</span><strong id="productTotal">0</strong></div>
+                <div class="mini-stat"><span>Saved favorites</span><strong id="wishlistTotal">0</strong></div>
+                <div class="mini-stat"><span>Cart subtotal</span><strong id="heroSubtotal">$0.00</strong></div>
+            </aside>
+        </div>
+    </header>
+
+    <section class="benefits" aria-label="Shopping benefits">
+        <div class="container benefit-grid">
+            <div class="benefit">
+                <div class="benefit-icon">24</div>
+                <div><strong>Quick delivery</strong><span>Clear order flow for fast checkout.</span></div>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon">$</div>
+                <div><strong>Smart pricing</strong><span>Sort and compare without friction.</span></div>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon">OK</div>
+                <div><strong>Easy account help</strong><span>Forgot-password demo flow included.</span></div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <main id="products" class="products">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow">Featured Products</p>
+                    <h2>Find your next useful thing</h2>
+                </div>
+                <p class="muted" id="resultCount">Showing all products</p>
+            </div>
+
+            <div class="filters" aria-label="Product filters">
+                <input class="search-box" type="search" id="searchInput" placeholder="Search products">
+                <select class="filter-select" id="categoryFilter" aria-label="Filter by category">
+                    <option value="all">All categories</option>
+                </select>
+                <select class="filter-select" id="sortSelect" aria-label="Sort products">
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: low to high</option>
+                    <option value="price-high">Price: high to low</option>
+                    <option value="rating">Top rated</option>
+                </select>
+            </div>
+
+            <div class="products-grid" id="products-grid"></div>
+        </div>
+    </main>
+
+    <div class="modal" id="productModal" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <div class="modal-head">
+                <h2 id="modalTitle">Product</h2>
+                <button class="icon-btn" id="closeProductModal" aria-label="Close product details">X</button>
+            </div>
+            <div class="modal-body" id="productModalBody"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="cartModal" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+            <div class="modal-head">
+                <h2 id="cartTitle">Your cart</h2>
+                <button class="icon-btn" id="closeCartModal" aria-label="Close cart">X</button>
+            </div>
+            <div class="modal-body" id="cartModalBody"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
     <footer class="footer">
         <div class="container">
             <p>&copy; 2026 ShopHub. All rights reserved.</p>
-            <p>Contact: support@shophub.com</p>
+            <p>support@shophub.com</p>
         </div>
     </footer>
 

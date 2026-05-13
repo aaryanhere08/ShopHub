@@ -5,171 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - ShopHub</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <style>
-        .signup-container {
-            max-width: 400px;
-            margin: 80px auto;
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .signup-container h2 {
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #333;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
-        }
-
-        .signup-btn {
-            width: 100%;
-            background: #667eea;
-            color: white;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: background 0.3s ease;
-        }
-
-        .signup-btn:hover {
-            background: #764ba2;
-        }
-
-        .login-link {
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .login-link a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .login-link a:hover {
-            text-decoration: underline;
-        }
-
-        .message {
-            margin-top: 1rem;
-            padding: 1rem;
-            border-radius: 5px;
-            display: none;
-        }
-
-        .success {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .message.show {
-            display: block;
-        }
-    </style>
 </head>
 <body>
-    <div class="signup-container">
-        <h2>Sign Up</h2>
-        <form id="signupForm">
-            <div class="form-group">
-                <label for="fullname">Full Name</label>
-                <input type="text" id="fullname" name="fullname" required>
+    <main class="auth-page">
+        <section class="auth-aside">
+            <a class="logo" href="../index.html">ShopHub</a>
+            <h1>Create your shopping hub.</h1>
+            <p>Save favorites, keep your cart between visits, and move faster through checkout.</p>
+        </section>
+
+        <section class="auth-panel">
+            <div class="auth-card">
+                <h2>Sign Up</h2>
+                <p>Start with a few details. This demo stores accounts in your browser.</p>
+
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="fullname">Full Name</label>
+                        <input type="text" id="fullname" name="fullname" autocomplete="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" autocomplete="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" autocomplete="new-password" minlength="6" required>
+                        <div class="strength" aria-hidden="true"><span id="strengthBar"></span></div>
+                        <p class="hint" id="strengthText">Use at least 6 characters.</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" name="confirm-password" autocomplete="new-password" minlength="6" required>
+                    </div>
+                    <button type="submit" class="auth-btn">Create Account</button>
+                    <div id="message" class="message"></div>
+                </form>
+
+                <div class="auth-links">
+                    <a href="login.html">Already have an account?</a>
+                    <a href="../index.html">Back to Home</a>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="confirm-password">Confirm Password</label>
-                <input type="password" id="confirm-password" name="confirm-password" required>
-            </div>
-            <button type="submit" class="signup-btn">Sign Up</button>
-            <div id="message" class="message"></div>
-        </form>
-        <div class="login-link">
-            Already have an account? <a href="login.html">Login here</a>
-        </div>
-        <div class="login-link">
-            <a href="../index.html">Back to Home</a>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script>
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const fullname = document.getElementById('fullname').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
-            const messageDiv = document.getElementById('message');
-            
-            // Validate passwords match
+        const form = document.getElementById("signupForm");
+        const passwordInput = document.getElementById("password");
+        const strengthBar = document.getElementById("strengthBar");
+        const strengthText = document.getElementById("strengthText");
+        const messageDiv = document.getElementById("message");
+
+        passwordInput.addEventListener("input", updateStrength);
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const fullname = document.getElementById("fullname").value.trim();
+            const email = document.getElementById("email").value.trim().toLowerCase();
+            const password = passwordInput.value;
+            const confirmPassword = document.getElementById("confirm-password").value;
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+
             if (password !== confirmPassword) {
-                messageDiv.textContent = 'Passwords do not match!';
-                messageDiv.className = 'message show error';
+                showMessage("Passwords do not match.", "error");
                 return;
             }
-            
-            // Simulate signup
-            if (fullname && email && password.length >= 6) {
-                // Save user to localStorage
-                const users = JSON.parse(localStorage.getItem('users')) || [];
-                users.push({
-                    id: Date.now(),
-                    fullname: fullname,
-                    email: email,
-                    password: password
-                });
-                localStorage.setItem('users', JSON.stringify(users));
-                
-                messageDiv.textContent = 'Account created successfully! Redirecting to login...';
-                messageDiv.className = 'message show success';
-                
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 2000);
-            } else {
-                messageDiv.textContent = 'Please fill all fields correctly (password min 6 characters)';
-                messageDiv.className = 'message show error';
+
+            if (users.some((user) => user.email.toLowerCase() === email)) {
+                showMessage("An account already exists for this email.", "error");
+                return;
             }
+
+            if (!fullname || !email || password.length < 6) {
+                showMessage("Please complete all fields with a valid password.", "error");
+                return;
+            }
+
+            users.push({
+                id: Date.now(),
+                fullname,
+                email,
+                password,
+                createdAt: new Date().toISOString()
+            });
+            localStorage.setItem("users", JSON.stringify(users));
+
+            showMessage("Account created. Redirecting to login...", "success");
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1000);
         });
+
+        function updateStrength() {
+            const password = passwordInput.value;
+            let score = 0;
+            if (password.length >= 6) score += 1;
+            if (password.length >= 10) score += 1;
+            if (/[A-Z]/.test(password) && /[a-z]/.test(password)) score += 1;
+            if (/[0-9]/.test(password)) score += 1;
+            if (/[^A-Za-z0-9]/.test(password)) score += 1;
+
+            const width = Math.min(score * 20, 100);
+            strengthBar.style.width = `${width}%`;
+            strengthBar.style.background = score >= 4 ? "#0f766e" : score >= 2 ? "#f97316" : "#dc2626";
+            strengthText.textContent = score >= 4 ? "Strong password." : score >= 2 ? "Good start. Add variety for extra strength." : "Use at least 6 characters.";
+        }
+
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `message show ${type}`;
+        }
     </script>
 </body>
 </html>
