@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopHub - E-Commerce Store</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">ShopHub</div>
+            <ul class="nav-menu">
+                <li><a href="#products">Products</a></li>
+                <li><a href="pages/login.html">Login</a></li>
+                <li><a href="pages/signup.html">Signup</a></li>
+                <li><a href="#" onclick="viewCart()" class="cart-btn">Cart (<span id="cart-count">0</span>)</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to ShopHub</h1>
+            <p>Find the best products at unbeatable prices</p>
+            <button class="cta-btn" onclick="document.getElementById('products').scrollIntoView()">Shop Now</button>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products">
+        <div class="container">
+            <h2>Featured Products</h2>
+            <div class="products-grid" id="products-grid">
+                <!-- Products loaded by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 ShopHub. All rights reserved.</p>
+            <p>Contact: support@shophub.com</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

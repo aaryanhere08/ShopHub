@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - ShopHub</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .checkout-container {
+            max-width: 900px;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            padding: 0 20px;
+        }
+
+        .checkout-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .checkout-form h3 {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        .checkout-form h3:first-child {
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: #667eea;
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 2rem;
+            transition: background 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            background: #764ba2;
+        }
+
+        .order-summary {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .order-summary h3 {
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .cart-items {
+            margin-bottom: 1.5rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .item-qty {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .item-price {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .order-total {
+            border-top: 2px solid #667eea;
+            padding-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            color: #333;
+        }
+
+        .empty-message {
+            padding: 2rem;
+            text-align: center;
+            color: #999;
+        }
+
+        .continue-shopping {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .order-summary {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">ShopHub</div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#products">Products</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="checkout-container">
+        <!-- Checkout Form -->
+        <form id="checkoutForm" class="checkout-form">
+            <h3>Shipping Address</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Street Address</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+                <div class="form-group">
+                    <label for="zipcode">ZIP Code</label>
+                    <input type="text" id="zipcode" name="zipcode" required>
+                </div>
+            </div>
+
+            <h3>Payment Information</h3>
+            <div class="form-group">
+                <label for="cardName">Cardholder Name</label>
+                <input type="text" id="cardName" name="cardName" required>
+            </div>
+            <div class="form-group">
+                <label for="cardNumber">Card Number</label>
+                <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="expiry">Expiry Date</label>
+                    <input type="text" id="expiry" name="expiry" placeholder="MM/YY" required>
+                </div>
+                <div class="form-group">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="123" required>
+                </div>
+            </div>
+
+            <button type="submit" class="checkout-btn">Complete Purchase</button>
+            <div style="text-align: center; margin-top: 1rem;">
+                <a href="../index.html" class="continue-shopping">Continue Shopping</a>
+            </div>
+        </form>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            <div class="cart-items" id="cartItems">
+                <div class="empty-message">Your cart is empty</div>
+            </div>
+            <div class="order-total">
+                <span>Total:</span>
+                <span id="orderTotal">$0.00</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 ShopHub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Load cart from localStorage
+        let cart = [];
+        
+        function loadCheckout() {
+            const saved = localStorage.getItem('cart');
+            if (saved) {
+                cart = JSON.parse(saved);
+            }
+            displayCartItems();
+        }
+
+        function displayCartItems() {
+            const cartContainer = document.getElementById('cartItems');
+            const totalElement = document.getElementById('orderTotal');
+            
+            if (cart.length === 0) {
+                cartContainer.innerHTML = '<div class="empty-message">Your cart is empty</div>';
+                totalElement.textContent = '$0.00';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                html += `
+                    <div class="cart-item">
+                        <div class="item-details">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-qty">Qty: ${item.quantity}</div>
+                        </div>
+                        <div class="item-price">$${itemTotal.toFixed(2)}</div>
+                    </div>
+                `;
+            });
+
+            cartContainer.innerHTML = html;
+            totalElement.textContent = '$' + total.toFixed(2);
+        }
+
+        // Handle form submission
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            // Create order
+            const order = {
+                id: Date.now(),
+                cart: cart,
+                shippingInfo: {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    city: document.getElementById('city').value,
+                    zipcode: document.getElementById('zipcode').value
+                },
+                orderDate: new Date().toISOString()
+            };
+
+            // Save order to localStorage
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.push(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            // Clear cart
+            localStorage.removeItem('cart');
+
+            alert('Order placed successfully! Order ID: ' + order.id);
+            window.location.href = '../index.html';
+        });
+
+        // Load checkout on page load
+        document.addEventListener('DOMContentLoaded', loadCheckout);
+    </script>
+</body>
+</html>
+    </footer>
+
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/checkout.js"></script>
+</body>
+</html>
